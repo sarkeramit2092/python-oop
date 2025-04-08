@@ -43,7 +43,21 @@ class Bilal:
     @classmethod
     def get_count(cls):
         print(f"Total Bilal instances created: {cls.count}")
+
+#why not we give Bilai.count?
+#It's not flexble
+#It will only count Bilai rather Tiger and any other child class of Bilai.
+
+    class Tiger(Bilai):
+          count = 0
+          def __init__(self,name.age.color):
+                self.name = name
+                self.age = age
+                self.color = color
+                Tiger.count += 1  # Increment class variable
+               
 ```
+![image](https://github.com/user-attachments/assets/92ac5087-f7b8-4072-952c-f022b9a85d33)
 
 ---
 
@@ -51,6 +65,10 @@ class Bilal:
 ```python
 b1 = Bilal("Ali", 25, "Brown")
 b2 = Bilal("Sara", 30, "Black")
+
+tiger1 = Tiger("Nila", 23, "Red")
+
+Tiger.get_count() # Output: Total Bilal instances created: 2
 
 Bilal.get_count()
 # Output: Total Bilal instances created: 2
