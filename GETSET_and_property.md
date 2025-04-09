@@ -8,169 +8,6 @@ Encapsulation is one of the fundamental principles of **object-oriented programm
 
 ![property decorator](https://github.com/user-attachments/assets/87b334b8-1e71-48e2-b061-4a812f07714f)
 
-## ✅ Key Concepts
-
-### 🔐 Public vs Private Variables
-
-```python
-class BankAccount:
-    def __init__(self, account_number, balance, password):
-        self.account_number = account_number    # Public variable
-        self.__balance = balance                # Private variable
-        self.__password = password              # Private variable
-```
-account_number is public, accessible from outside the class.
-__balance and __password are private, intended to be accessed only within the class.
-
-🔎 Access Control with Methods
-```python
-def check_balance(self, password):
-    if password == self.__password:
-        return f"Your balance is: {self.__balance}"
-    else:
-        return "Incorrect password! Access denied."
-```
-This method checks if the entered password matches the stored one before displaying the balance.
-
-It safely accesses private variables.
-
-❌ Problem in Original Code
-
-```python
-if password == self.password:  # ❌ self.password is not defined
-    return f"Your balance is: {self.balance}"  # ❌ self.balance is also undefined
-These lines incorrectly refer to self.password and self.balance, which do not exist (they are private as __password and __balance).
-```
-🧪 External Access and Its Flaw
-
-```python
-account = BankAccount("54321", 5000, "asdfg")
-account.balance = 15000
-print(account.balance)
-This creates a new attribute balance in the account object instead of modifying the private __balance.
-```
-Bypasses encapsulation – hence not recommended.
-
-✅ Best Practice: Use Getters/Setters
-
-```python
-class BankAccount:
-    def get_balance(self, password):
-        if password == self.__password:
-            return self.__balance
-        else:
-            return "Access denied"
-```
-Encapsulation encourages the use of methods to access or modify internal data securely.
-
-⚠️ Name Mangling and Misleading Access
-In Python, private variables (with double underscores) are name-mangled. This means:
-
-```python
-self.__balance
-```
-Is internally stored as:
-
-```python
-self._BankAccount__balance
-```
-❌ Misleading Code
-
-```python
-account = BankAccount("54321", 5000, "asdfg")
-
-account.__balance = 15000
-print(account.check_balance("asdfg"))
-print(account.__balance)
-```
-🧪 Output
-Your balance is: $5000
-15000
-account.__balance = 15000 creates a new variable.
-
-It does not change the private __balance from within the class.
-
-check_balance() still uses the original private value: 5000.
-
-✅ Correct Way (Not Recommended, but for Learning)
-
-```python
-account._BankAccount__balance = 15000
-```
-This directly accesses the private field using the name-mangled format.
-
-🛡 Best Practice: Use Setters
-
-```python
-def set_balance(self, new_balance, password):
-    if password == self.__password:
-        self.__balance = new_balance
-```
-### Using @property for Getters and Setters
-Python provides a neat way to encapsulate data with the @property decorator. This lets you control access to private attributes in a clean, readable way.
-
-**Getter**
-Method for accessing a private variable
-
-*Setter*
-Method for modifying a private variable
-
-✅ Example: Getter and Setter
-```python
-class BankAccount:
-    def __init__(self, account_number, balance, password):
-        self.account_number = account_number
-        self.__balance = balance
-        self.__password = password
-
-    @property
-    def balance(self):
-        return self.__balance
-
-    @balance.setter
-    def balance(self, value):
-        if value >= 0:
-            self.__balance = value
-        else:
-            raise ValueError("Balance cannot be negative")
-```
-🔎 Usage
-
-```python
-account = BankAccount("54321", 5000, "asdfg")
-
-print(account.balance)     # ➡ Calls the getter
-account.balance = 7000     # ➡ Calls the setter
-
-print(account.balance)     # ➡ Shows updated value: 7000
-```
-You interact with the balance attribute directly, but it's actually using methods under the hood.
-
-❌ Without Setter
-If you only define @property:
-
-```python
-@property
-def balance(self):
-    return self.__balance
-```
-Trying to set account.balance = 1000 will raise:
-
-AttributeError: can't set attribute
-
-🔐 Optional: Setter with Password Check
-For secure updates:
-
-```python
-def set_balance(self, value, password):
-    if password == self.__password:
-        self.__balance = value
-    else:
-        print("Unauthorized access!")
-```
-While this can't use the @balance.setter decorator directly (since decorators don’t support multiple arguments like passwords), it's useful for custom security logic.
-
-
 # Finally 
 
 ```python
@@ -222,11 +59,165 @@ print (bracbank.balance) #getter
 
 bracbank.balance = 20000   #setter
 
-print (bracbank.get_balance())
+print (bracbank.balance)
 
 print(bracbank.account_number)
 ```
 **Now bracbank.balance behaves like a normat attribute. But it actually calles the "def balance(sefl):" method.
 
 
+# What is Backward Compatibility?
+Backward compatibility means new code changes won't break the existing code that depends on the old behavior.
+
+So, if you had users (or your own codebase) calling a method like:
+
+```python
+account.get_balance()
+```
+And later, you want to make balance look like a normal attribute:
+
+```python
+
+account.balance  # instead of account.get_balance()
+```
+You want to support both styles (old and new), at least for a while, so that existing code still works — this is backward compatibility.
+
+💡 Using @property for Backward Compatibility
+Let’s say you had this original class:
+
+```python
+
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance
+
+    def get_balance(self):
+        return self.__balance
+```
+
+And lots of code is using:
+
+```python
+
+account.get_balance()
+Now, you decide to make it cleaner and Pythonic:
+
+python
+Copy code
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance
+
+    @property
+    def balance(self):
+        return self.__balance
+```
+But… if you remove get_balance(), all the old code will break.
+
+So, to maintain backward compatibility, you can keep the old method:
+
+```python
+
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance
+
+    def get_balance(self):             # ✅ Old method still works
+        return self.__balance
+
+    @property
+    def balance(self):                # ✅ New style also works
+        return self.__balance
+```
+
+Now both work:
+
+```python
+print(account.get_balance())  # Old code
+print(account.balance)        # New code
+```
+✅ Why This Matters
+If you're maintaining a library or large codebase, you don't want to break all existing usage when making things cleaner or more modern.
+
+You gradually transition code to the new way without creating bugs or breaking changes.
+
+🧼 Bonus Tip: Mark Deprecated
+If you want to encourage users to switch to the new @property, you can show a warning:
+
+```python
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance
+
+    def get_balance(self):
+        warnings.warn("Use '.balance' instead of 'get_balance()'", DeprecationWarning)
+        return self.__balance
+
+    @property
+    def balance(self):
+        return self.__balance
+```
+Now when someone uses the old method, they’ll get:
+
+```pgsql
+DeprecationWarning: Use '.balance' instead of 'get_balance()'
+```
+
+
+✅ Full Example: With Getter, Setter, and Backward Compatibility
+
+```python
+
+import warnings
+
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance
+
+    # Backward-compatible getter
+    def get_balance(self):
+        warnings.warn("Use '.balance' instead of 'get_balance()'", DeprecationWarning)
+        return self.__balance
+
+    # Backward-compatible setter
+    def set_balance(self, new_balance):
+        warnings.warn("Use '.balance = value' instead of 'set_balance()'", DeprecationWarning)
+        if new_balance < 0:
+            raise ValueError("Balance cannot be negative")
+        self.__balance = new_balance
+
+    # Modern Pythonic way - property getter
+    @property
+    def balance(self):
+        return self.__balance
+
+    # Modern Pythonic way - property setter
+    @balance.setter
+    def balance(self, new_balance):
+        if new_balance < 0:
+            raise ValueError("Balance cannot be negative")
+        self.__balance = new_balance
+```
+🧪 Usage
+```python
+account = BankAccount(1000)
+```
+# ✅ New preferred way
+```python
+print(account.balance)      # Getting balance
+account.balance = 5000      # Setting balance
+print(account.balance)
+```
+
+# 🔁 Old way (still works, but shows warning)
+print(account.get_balance())
+account.set_balance(9000)
+print(account.get_balance())
+
+🔔 Output (with warnings)
+
+5000
+9000
+<ipython-input-2>:12: DeprecationWarning: Use '.balance' instead of 'get_balance()'
+<ipython-input-2>:17: DeprecationWarning: Use '.balance = value' instead of 'set_balance()'
 
