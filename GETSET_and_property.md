@@ -109,6 +109,12 @@ def set_balance(self, new_balance, password):
 ### Using @property for Getters and Setters
 Python provides a neat way to encapsulate data with the @property decorator. This lets you control access to private attributes in a clean, readable way.
 
+**Getter**
+Method for accessing a private variable
+
+*Setter*
+Method for modifying a private variable
+
 ✅ Example: Getter and Setter
 ```python
 class BankAccount:
@@ -163,5 +169,64 @@ def set_balance(self, value, password):
         print("Unauthorized access!")
 ```
 While this can't use the @balance.setter decorator directly (since decorators don’t support multiple arguments like passwords), it's useful for custom security logic.
+
+
+# Finally 
+
+```python
+class BankAccount:
+    def __init__(self, account_number, balance):
+        self.account_number = account_number
+        self.__balance = balance
+
+    def get_balance(self):
+        return self.__balance
+    
+    def set_balance(self, new_balance):
+            self.__balance = new_balance
+
+
+bracbank = BankAccount(243,8000)
+
+print (bracbank.get_balance()) #getter
+
+bracbank.set_balance(12000)    #setter
+
+print (bracbank.get_balance())
+
+print(bracbank.account_number)
+```
+
+**But using get_balance() -showing people that we are using method "()" to call private variable. So our terget is to use private sttributes like normal attributes/variables.
+
+![gettersetter](https://github.com/user-attachments/assets/794e5991-3096-4aa3-bbce-8f97a5cd93df)
+
+```python
+class BankAccount:
+    def __init__(self, account_number, balance):
+        self.account_number = account_number
+        self.__balance = balance
+
+    @property
+    def balance(self):
+        return self.__balance
+
+    @balance.setter
+    def balance(self, new_balance):    #set_balance to balance because our variable named balance.
+            self.__balance = new_balance
+
+
+bracbank = BankAccount(243,8000)
+
+print (bracbank.balance) #getter
+
+bracbank.balance = 20000   #setter
+
+print (bracbank.get_balance())
+
+print(bracbank.account_number)
+```
+**Now bracbank.balance behaves like a normat attribute. But it actually calles the "def balance(sefl):" method.
+
 
 
