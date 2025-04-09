@@ -2,7 +2,9 @@
 # 🔐 Encapsulation in Python
 
 Encapsulation is one of the fundamental principles of **object-oriented programming (OOP)**. It restricts direct access to some of an object’s components and helps prevent accidental modification of data.
+
 ![Encapsulation_diagram](https://github.com/user-attachments/assets/da2b28e0-a50e-494d-a1a5-fc5f203ba7dd)
+
 ![Encapsulation_diagram_2](https://github.com/user-attachments/assets/a4b82e68-8c01-4e6d-8903-623c2f336103)
 
 
@@ -34,8 +36,11 @@ def check_balance(self, password):
     else:
         return "Incorrect password! Access denied."
 ```
+
 ![Encapsulation](https://github.com/user-attachments/assets/892b7c95-7ac4-4c80-85f2-24ce01c6a2b8)
+
 > print(account.balance)
+
 ![Encapsulation](https://github.com/user-attachments/assets/40c36873-033f-4a44-af32-8063beccf03d)
 
 
