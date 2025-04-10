@@ -37,7 +37,7 @@ cat2.name_please(5,6) #instance method
 Bilai.how_many(5,6)   #class method
 Bilai.addition(5,6)   #static method
 ```
-<big><ins>Output</ins></big>
+<b><ins>Output</ins></b>
 ```
 5 6
 My name is Lilli
