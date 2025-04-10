@@ -14,24 +14,37 @@ class Bilai:
         self.name = name
         self.age = age
         self.color = color
-        Bilai.count += 1
+        Bilai.count += 1 #Class Attribute
 
     def name_please(self, x, y):
+        print(x,y)
         print(f"My name is {self.name}")
 
     @classmethod
     def how_many(cls, x, y):
+        print(x,y)
         print(f'There are {cls.count} cats')
 
     @staticmethod
     def addition(x, y):
+        print(x,y)
         print("sum=", x + y)
-```
 
-```python
+
+cat2 = Bilai("Lilli",2,"red")
+
 cat2.name_please(5,6) #instance method
 Bilai.how_many(5,6)   #class method
 Bilai.addition(5,6)   #static method
+```
+<big><ins>Output</ins></big>
+```
+5 6
+My name is Lilli
+5 6
+There are 1 cats
+5 6
+sum= 11
 ```
 ✅ Key Characteristics:
 Does not use self or cls.
