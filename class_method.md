@@ -92,10 +92,10 @@ def get_count(cls):
 ```
 Here's why it is used:
 
-✅ Purpose of cls.__name__
+✅ Purpose of ```cls.__name__```
 cls refers to the class that calls the method.
 
-cls.__name__ returns the name of the class as a string.
+```cls.__name__``` returns the name of the class as a string.
 
 This makes the method generic — it works for both Bilai and any subclasses like Tiger.
 
@@ -110,7 +110,7 @@ Tiger.get_count()  # called after creating 1 Tiger object
 The output would be:
 Number of Bilai = 3
 Number of Tiger = 1
-Here, cls.__name__ dynamically picks "Bilai" or "Tiger" depending on which class calls the method.
+Here, ```cls.__name__``` dynamically picks "Bilai" or "Tiger" depending on which class calls the method.
 
-** Using cls.__name__ ** in a class method helps print or log the class name dynamically. It's useful in inheritance and debugging when the method might be called by different subclasses.
+ Using ```cls.__name__```  in a class method helps print or log the class name dynamically. It's useful in inheritance and debugging when the method might be called by different subclasses.
 
