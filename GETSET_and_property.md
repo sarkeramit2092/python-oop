@@ -34,7 +34,7 @@ print (bracbank.get_balance())
 print(bracbank.account_number)
 ```
 
-**But using get_balance() -showing people that we are using method "()" to call private variable. So our terget is to use private sttributes like normal attributes/variables.
+**But using ```python get_balance()``` -showing people that we are using method "()" to call private variable. So our terget is to use private sttributes like normal attributes/variables.
 
 ![gettersetter](https://github.com/user-attachments/assets/794e5991-3096-4aa3-bbce-8f97a5cd93df)
 
