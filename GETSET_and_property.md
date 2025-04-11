@@ -64,6 +64,7 @@ print (bracbank.balance)
 print(bracbank.account_number)
 ```
 **Now bracbank.balance behaves like a normat attribute. But it actually calles the "def balance(sefl):" method.
+![method_name_property](https://github.com/user-attachments/assets/aa478006-09a5-420b-a0d8-fa0681334461)
 
 
 # What is Backward Compatibility?
